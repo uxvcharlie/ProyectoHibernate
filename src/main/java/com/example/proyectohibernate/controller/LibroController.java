@@ -3,7 +3,7 @@ package com.example.proyectohibernate.controller;
 import com.example.proyectohibernate.dao.LibroDAO;
 import com.example.proyectohibernate.model.Libro;
 import com.sun.jdi.IntegerValue;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,11 +68,11 @@ public class LibroController {
 
     @FXML
     private void initialize() {
-        colId.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getId()));
-        colTitulo.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getTitulo()));
-        colAutor.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getAutor()));
-        colAnio.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getAnio_publicacion()));
-        colPrecio.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getPrecio()));
+        colId.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
+        colTitulo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTitulo()));
+        colAutor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAutor()));
+        colAnio.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getAnio_publicacion()));
+        colPrecio.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getPrecio()));
         cargarTabla();
     }
 
