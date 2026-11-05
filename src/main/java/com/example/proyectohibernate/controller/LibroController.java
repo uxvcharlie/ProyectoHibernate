@@ -68,15 +68,16 @@ public class LibroController {
 
     @FXML
     private void initialize() {
+
+    }
+
+    private void cargarTabla() {
         colId.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
         colTitulo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTitulo()));
         colAutor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAutor()));
         colAnio.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getAnio_publicacion()));
         colPrecio.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getPrecio()));
         cargarTabla();
-    }
-
-    private void cargarTabla() {
     }
 
     private void mostrarLibro() {
@@ -95,7 +96,12 @@ public class LibroController {
     }
 
     @FXML
-    void eliminar(ActionEvent event) {
+    void eliminar() {
+        try {
+
+        } finally {
+            mostrarLibro();
+        }
 
     }
 
@@ -119,8 +125,12 @@ public class LibroController {
     }
 
     @FXML
-    void limpiarCampos(ActionEvent event) {
-
+    void limpiarCampos() {
+        txtAutor.clear();
+        txtLibro.clear();
+        txtPrecio.clear();
+        txtPublicacion.clear();
+        txtAutor.requestFocus();
     }
 
     @FXML
