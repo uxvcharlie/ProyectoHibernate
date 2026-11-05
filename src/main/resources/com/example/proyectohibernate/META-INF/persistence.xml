@@ -14,7 +14,7 @@ version="3.2">
 
         <properties>
             <property name="jakarta.persistence.jdbc.driverr" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/bdbiblioteca"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <property name="jakarta.persistence.jdbc.password" value="${DB_PASSWORD}"/>
 
@@ -28,3 +28,5 @@ version="3.2">
     </persistence-unit>
 
 </persistence>
+
+<!--Cambio para commit-->

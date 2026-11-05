@@ -35,6 +35,9 @@ public class Libro {
         this.precio = precio;
     }
 
+    public Libro(String titulo, String autor, int anio, double precio) {
+    }
+
     public long getId() {
         return id;
     }
