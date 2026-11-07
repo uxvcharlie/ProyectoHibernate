@@ -19,8 +19,8 @@ public class JPAUtil {
             }
 
             Map<String, Object> propiedades = new HashMap<>();
-            propiedades.put("javax.persistence.jdbc.password", password);
-            emf = Persistence.createEntityManagerFactory("BibliotecaPU", propiedades);
+            propiedades.put("jakarta.persistence.jdbc.password", password);
+            emf = Persistence.createEntityManagerFactory("bibliotecaPU", propiedades);
 
         }
 

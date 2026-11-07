@@ -7,13 +7,9 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class LibroController {
@@ -43,7 +39,7 @@ public class LibroController {
     private TableColumn<Libro, Long> colId;
 
     @FXML
-    private TableColumn<Libro, Double> colPrecio;
+    private TableColumn<Libro, BigDecimal> colPrecio;
 
     @FXML
     private TableColumn<Libro, String> colTitulo;
@@ -66,9 +62,13 @@ public class LibroController {
     @FXML
     private Label welcomeText;
 
+    private final LibroDAO libroDAO = new LibroDAO();
+    private Long idSeleccionado = null;
+
+
     @FXML
     private void initialize() {
-
+        cargarTabla();
     }
 
     private void cargarTabla() {
@@ -77,10 +77,26 @@ public class LibroController {
         colAutor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAutor()));
         colAnio.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getAnio_publicacion()));
         colPrecio.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getPrecio()));
-        cargarTabla();
+        cargar();
     }
 
     private void mostrarLibro() {
+
+    }
+
+    private void actualizarBotones(){
+        boolean sinSeleccion = idSeleccionado == null;
+        btnModificarLibro.setDisable(sinSeleccion);
+        btnEliminarLibro.setDisable(sinSeleccion);
+
+    }
+
+    private Libro obtenerLibro(){
+        String titulo = txtLibro.getText();
+        String autor = txtAutor.getText();
+        int anio = Integer.valueOf(txtPublicacion.getText());
+        BigDecimal precio = new BigDecimal(txtPrecio.getText());
+        return new  Libro(titulo, autor, anio, precio);
     }
 
 
@@ -90,6 +106,7 @@ public class LibroController {
             List<Libro> libros = LibroDAO.listar();
             tblLibro.setItems(FXCollections.observableArrayList(libros));
 
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -98,9 +115,18 @@ public class LibroController {
     @FXML
     void eliminar() {
         try {
+            tblLibro.setItems(null);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmacion");
+            alert.setHeaderText("Estas seguro de eliminar el libro?");
 
+            ButtonType si = new ButtonType("Si");
+            ButtonType no = new ButtonType("no");
+
+            alert.getButtonTypes().setAll(si, no);
+            alert.showAndWait();
         } finally {
-            mostrarLibro();
+            cargar();
         }
 
     }
@@ -111,7 +137,7 @@ public class LibroController {
             String titulo = txtLibro.getText();
             String autor = txtAutor.getText();
             int anio = Integer.valueOf(txtPublicacion.getText());
-            double precio = Double.valueOf(txtPrecio.getText());
+            BigDecimal precio = new BigDecimal(txtPrecio.getText().trim());
 
             Libro libro= new Libro(titulo, autor, anio, precio);
             LibroDAO.guardar(libro);
@@ -134,7 +160,22 @@ public class LibroController {
     }
 
     @FXML
-    void modificar(ActionEvent event) {
+    void modificar() {
+        if(idSeleccionado == null){
+            return;
+        }
 
+        try {
+            Libro libro = obtenerLibro();
+            libro.setId(idSeleccionado);
+            boolean modificado = libroDAO.modificar(libro);
+            if(!modificado){
+                return;
+
+            }
+            cargarTabla();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

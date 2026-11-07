@@ -18,13 +18,4 @@ public class BibliotecaApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-    @Override
-    public void stop() {
-        JPAUtil.cerrar();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

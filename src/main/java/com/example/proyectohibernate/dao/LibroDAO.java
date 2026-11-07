@@ -19,7 +19,10 @@ public class LibroDAO {
             tx.commit();
         }
         catch (RuntimeException e) {
-            tx.rollback();
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
         }
         finally {
             em.close();
@@ -33,5 +36,54 @@ public class LibroDAO {
         } finally {
             em.close();
         }
+    }
+
+    public boolean modificar(Libro  libro) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+
+        /*Opcion 1*/
+        /*em.merge(libro);*/
+
+        Libro LibroBD = em.find(Libro.class, libro.getId());
+        if(LibroBD == null){
+            tx.rollback();
+            return false;
+        }
+
+        LibroBD.setTitulo(libro.getTitulo());
+        LibroBD.setAutor(libro.getAutor());
+        LibroBD.setPrecio(libro.getPrecio());
+        LibroBD.setAnio_publicacion(libro.getAnio_publicacion());
+        tx.commit();
+
+        return true;
+    }
+
+    public boolean eliminar(Long id){
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+            Libro LibroBD = em.find(Libro.class, id);
+            if(LibroBD == null){
+                tx.rollback();
+                return false;
+            }
+            em.remove(LibroBD);
+            tx.commit();
+            return true;
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+                throw e;
+            }
+        } finally {
+            em.close();
+        }
+        return false;
     }
 }
