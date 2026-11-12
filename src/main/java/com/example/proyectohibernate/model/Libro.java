@@ -26,16 +26,14 @@ public class Libro {
     @Column(name = "precio",   nullable = false, precision =  10, scale = 2)
     private BigDecimal precio;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", nullable = false )
+    private Categoria categoria;
+
+
     public Libro() {
     }
 
-    public Libro(long id, String titulo, String autor, int anio_publicacion, BigDecimal precio) {
-        this.id = id;
-        this.titulo = titulo;
-        this.autor = autor;
-        this.anio_publicacion = anio_publicacion;
-        this.precio = precio;
-    }
 
     public Libro(String titulo, String autor, int anio, BigDecimal precio) {
         this.titulo = titulo;
@@ -82,5 +80,13 @@ public class Libro {
 
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
+    }
+
+    public Libro(String titulo, String autor, int anio_publicacion, BigDecimal precio, Categoria categoria) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.anio_publicacion = anio_publicacion;
+        this.precio = precio;
+        this.categoria = categoria;
     }
 }
