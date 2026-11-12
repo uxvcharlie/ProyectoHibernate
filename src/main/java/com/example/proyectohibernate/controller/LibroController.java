@@ -81,14 +81,12 @@ public class LibroController {
     }
 
     private void mostrarLibro() {
-
     }
 
     private void actualizarBotones(){
         boolean sinSeleccion = idSeleccionado == null;
         btnModificarLibro.setDisable(sinSeleccion);
         btnEliminarLibro.setDisable(sinSeleccion);
-
     }
 
     private Libro obtenerLibro(){
@@ -115,7 +113,7 @@ public class LibroController {
     @FXML
     void eliminar() {
         try {
-            tblLibro.setItems(null);
+            tblLibro.getSelectionModel().clearSelection();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmacion");
             alert.setHeaderText("Estas seguro de eliminar el libro?");
